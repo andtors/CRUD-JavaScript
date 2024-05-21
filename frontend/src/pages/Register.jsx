@@ -15,7 +15,7 @@ export const Register = () => {
 
     const [data, setData] = useState(null)
 
-    useEffect(  () => {
+    useEffect(() => {
         async function fetchData() {
 
           const res = await fetch(url)
@@ -27,9 +27,6 @@ export const Register = () => {
         fetchData()
       }, [])
 
-      console.log(users)
-
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         const dataUser = {
@@ -37,21 +34,40 @@ export const Register = () => {
             email,
             password,
         }
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dataUser)
-            })
+        validateRegister(dataUser)
+    }
+    
+    const validateRegister = async(dataUser) => {
 
-            const result = await response.json()
-            console.log("Sucesso:", result)
+        try {
+            const res = await fetch(url)
+
+            const data = await res.json()
+
+            const checkEmail = data.map((d) => d.email)
+            if(checkEmail.includes(dataUser.email)){
+                console.log('Usuario já cadastrado!')
+                return
+            } else if (dataUser.name.length === 0 || dataUser.email.length === 0|| dataUser.password.length === 0) {
+                console.log('Informe um nome, email ou senha valído')
+                return
+            } else {
+                finalRegister(dataUser)
+            }
         } catch (error) {
             console.log(error)
         }
     }
+
+    const finalRegister = async(dataUser) => {
+        await fetch(url, {
+            method:'POST',
+            headers: {
+                "Content-Type" : "application.json"
+            },
+            body: JSON.stringify(dataUser)
+        }
+    )}
 
 
     return (
