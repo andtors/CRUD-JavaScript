@@ -8,13 +8,13 @@ export const Register = () => {
 
     const url = "http://localhost:3000/users"
     const [users, setUsers] = useState([])
+    const [userId, setUserId] = useState("")
 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const [data, setData] = useState(null)
-
+    
     useEffect(() => {
         async function fetchData() {
 
@@ -26,7 +26,8 @@ export const Register = () => {
         }
         fetchData()
       }, [])
-
+      
+      
     const handleSubmit = async (e) => {
         e.preventDefault()
         const dataUser = {
@@ -38,7 +39,6 @@ export const Register = () => {
     }
     
     const validateRegister = async(dataUser) => {
-
         try {
             const res = await fetch(url)
 
@@ -68,7 +68,18 @@ export const Register = () => {
             body: JSON.stringify(dataUser)
         }
     )}
-
+    
+    const deleteUser = async () => {
+        var urlDel = `${url}/${userId}`
+        await fetch(urlDel, {
+            method: 'DELETE',
+            headers: {
+                "Content-type":"application/json"
+            }
+        })
+       
+    }
+   
 
     return (
         <div>
@@ -88,7 +99,7 @@ export const Register = () => {
             
             <ul>
                 {users.map((user) => (
-                    <li key={user.id}>{user.name} - {user.email}</li>
+                    <li key={user.id}>{user.name} - {user.email} <Link to="/login">Editar</Link> <span onClick={() => deleteUser(setUserId(user.id))}>Deletar</span></li>
                 ))}
             </ul>
         </div>

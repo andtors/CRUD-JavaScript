@@ -5,25 +5,20 @@ import { useState } from 'react'
 
 
 
-const Login = () => {
+const Login = ({user}) => {
+    
+    const url = "http://localhost:3000/users"
+    
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    
+
     const handleSubmit = (e) => {
-        e.preventDefault()
-        const user = {
-            email,
-            password
-        }
-
-        console.log(user)
+      e.preventDefault()
     }
-
-    
 
   return (
     <div>
-        <h1>Faça o Login para acessar o crud!</h1>
+        <h1>Atualize seus dados:</h1>
         <form onSubmit={handleSubmit}>
             <label>Insira seu e-mail:</label>
             <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder='Insira o e-mail'/>
