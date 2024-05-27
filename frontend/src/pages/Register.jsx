@@ -13,26 +13,25 @@ export const Register = () => {
     const [users, setUsers] = useState([])
     const [userId, setUserId] = useState("")
 
+    const [errors, setErrors] = useState("")
+
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    
-    const [nameEdit, setNameEdit] = useState("")
-    const [passwordEdit, setPasswordEdit] = useState("")
 
     useEffect(() => {
         async function fetchData() {
 
-          const res = await fetch(url)
+            const res = await fetch(url)
 
-          const data = await res.json()
-      
-          setUsers(data)
+            const data = await res.json()
+
+            setUsers(data)
         }
         fetchData()
-      }, [setTimeout(1000)])
-      
-      
+    }, [setTimeout(1000)])
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const dataUser = {
@@ -42,19 +41,19 @@ export const Register = () => {
         }
         validateRegister(dataUser)
     }
-    
-    const validateRegister = async(dataUser) => {
+
+    const validateRegister = async (dataUser) => {
         try {
             const res = await fetch(url)
 
             const data = await res.json()
 
             const checkEmail = data.map((d) => d.email)
-            if(checkEmail.includes(dataUser.email)){
-                console.log('Usuario já cadastrado!')
+            if (checkEmail.includes(dataUser.email)) {
+                setErrors('Usuario já cadastrado!')
                 return
-            } else if (dataUser.name.length === 0 || dataUser.email.length === 0|| dataUser.password.length === 0) {
-                console.log('Informe um nome, email ou senha valído')
+            } else if (dataUser.name.length === 0 || dataUser.email.length === 0 || dataUser.password.length === 0) {
+                setErrors('Informe um nome, email ou senha valído!')
                 return
             } else {
                 finalRegister(dataUser)
@@ -64,19 +63,23 @@ export const Register = () => {
         }
     }
 
-    const finalRegister = async(dataUser) => {
-        await fetch(url, {
-            method:'POST',
-            headers: {
-                "Content-Type" : "application.json"
-            },
-            body: JSON.stringify(dataUser)
+    const finalRegister = async (dataUser) => {
+
+        try {
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application.json"
+                },
+                body: JSON.stringify(dataUser)
+            }
+            )
+            navigate('/users')
+        } catch (error) {
+            console.log(error)
         }
-    )
-    navigate('/users')
-    
-}
-    
+    }
+
     return (
         <div>
             <h1>Cadastre um novo usuario no CRUD!</h1>
@@ -89,10 +92,13 @@ export const Register = () => {
                 <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder='Insira sua senha' value={password} />
                 <input type="submit" value="Cadastrar" />
             </form>
-            
+            {errors != "" &&
+                <>
+                    <p>{errors}</p>
+                </>}
 
             <p>Já possui conta? <Link to="/">Clique aqui</Link> para fazer login.</p>
-           
+
         </div>
     )
 }

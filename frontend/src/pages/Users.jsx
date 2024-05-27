@@ -15,18 +15,21 @@ const Users = () => {
 
   const deleteUser = async (userId) => {
 
-    var urlUser = `${url}/${userId}`
-    await fetch(urlUser, {
-      method: 'DELETE',
-      headers: {
-        "Content-type": "application/json"
-      }
-    })
-
+    try {
+      var urlUser = `${url}/${userId}`
+      await fetch(urlUser, {
+        method: 'DELETE',
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
-  const getEditUser = async (value) => {
+  const getEditUser = async () => {
 
     var urlUser = `${url}/${userId}`
 
@@ -42,7 +45,7 @@ const Users = () => {
     } catch (error) {
       console.log(error)
     }
-    
+
   }
 
 
@@ -51,23 +54,28 @@ const Users = () => {
     var urlUser = `${url}/${userId}`
 
     e.preventDefault()
-    
+
     const editedUser = {
       name,
       email,
       password
     }
 
-    await fetch(urlUser, {
-      method: 'PUT',
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(editedUser)
-    })
+    try {
+      await fetch(urlUser, {
+        method: 'PUT',
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(editedUser)
+      })
+    } catch (error) {
+      console.log(error)
+    }
 
     clearFields()
   }
+
 
   useEffect(() => {
     async function fetchData() {
@@ -86,8 +94,8 @@ const Users = () => {
     setName("")
     setPassword("")
     setEmail("")
-    
-}
+    setUserId("")
+  }
 
   return (
     <div>
@@ -101,21 +109,21 @@ const Users = () => {
 
       <p>Registrar mais usuarios <Link to="/register">Aqui!</Link></p>
 
-      { userId != undefined  &&
-      <>
-       <h1>Edite as informações</h1>
-            <form onSubmit={handleEdit}>
-                <label>Atualize seu nome:</label>
-                <input type="name" onChange={(e) => setName(e.target.value)} value={name} />
-                <label>Atualize seu e-mail:</label>
-                <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} />
-                <label>Atualize sua senha:</label>
-                <input type="name" onChange={(e) => setPassword(e.target.value)} value={password} />
-                <input type="submit" value="Editar" />
-            </form>
-            </>
-    }
-      </div>
+      {userId != "" &&
+        <>
+          <h1>Edite as informações</h1>
+          <form onSubmit={handleEdit}>
+            <label>Atualize seu nome:</label>
+            <input type="name" onChange={(e) => setName(e.target.value)} value={name} required />
+            <label>Atualize seu e-mail:</label>
+            <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />
+            <label>Atualize sua senha:</label>
+            <input type="name" onChange={(e) => setPassword(e.target.value)} value={password} required />
+            <input type="submit" value="Editar" />
+          </form>
+        </>
+      }
+    </div>
   )
 }
 

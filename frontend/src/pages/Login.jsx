@@ -10,6 +10,8 @@ const Login = () => {
   const navigate = useNavigate();
   const url = "http://localhost:3000/users"
 
+  const [errors, setErrors] = useState("")
+
   const [users, setUsers] = useState([])
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -23,7 +25,8 @@ const Login = () => {
     if(checkUserEmail.includes(email) && checkUserPassword.includes(password)){
       navigate('/users')
     } else {
-      console.log('Login e senhas erradas!')
+      setErrors('E-mail ou senha erradas!')
+      console.log(errors)
     }
 
   }
@@ -52,8 +55,12 @@ const Login = () => {
         <label>Insira sua senha: </label>
         <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder='Insira sua senha' />
         <input type="submit" value="Entrar" />
+        
       </form>
-
+      { errors != "" &&
+          <>
+          <p>{errors}</p>
+          </>}
       <p>Ainda não possui conta? <Link to="/register">Clique aqui</Link> para se cadastrar.</p>
 
     </div>
