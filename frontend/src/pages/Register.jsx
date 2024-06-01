@@ -10,8 +10,6 @@ export const Register = () => {
     const navigate = useNavigate();
 
     const url = "http://localhost:3000/users"
-    const [users, setUsers] = useState([])
-    const [userId, setUserId] = useState("")
 
     const [errors, setErrors] = useState("")
 
@@ -29,8 +27,7 @@ export const Register = () => {
             setUsers(data)
         }
         fetchData()
-    }, [setTimeout(1000)])
-
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
-
   const navigate = useNavigate();
   const url = "http://localhost:3000/users"
 
@@ -28,7 +27,6 @@ const Login = () => {
       setErrors('E-mail ou senha erradas!')
       console.log(errors)
     }
-
   }
 
   useEffect(() => {
@@ -42,9 +40,6 @@ const Login = () => {
     }
     fetchData()
   }, [])
-
-  
-
 
   return (
     <div>

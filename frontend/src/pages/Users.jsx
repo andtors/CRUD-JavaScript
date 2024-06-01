@@ -7,11 +7,6 @@ const Users = () => {
 
   const url = "http://localhost:3000/users"
   const [users, setUsers] = useState([])
-  const [userId, setUserId] = useState("")
-
-  const [name, setName] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
 
   const deleteUser = async (userId) => {
 
@@ -28,55 +23,6 @@ const Users = () => {
     }
   }
 
-
-  const getEditUser = async () => {
-
-    var urlUser = `${url}/${userId}`
-
-    try {
-      const response = await fetch(urlUser)
-
-      const data = await response.json()
-
-      setName(data.name)
-      setPassword(data.password)
-      setEmail(data.email)
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
-
-
-  const handleEdit = async (e) => {
-
-    var urlUser = `${url}/${userId}`
-
-    e.preventDefault()
-
-    const editedUser = {
-      name,
-      email,
-      password
-    }
-
-    try {
-      await fetch(urlUser, {
-        method: 'PUT',
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(editedUser)
-      })
-    } catch (error) {
-      console.log(error)
-    }
-
-    clearFields()
-  }
-
-
   useEffect(() => {
     async function fetchData() {
 
@@ -87,42 +33,23 @@ const Users = () => {
       setUsers(data)
     }
     fetchData()
-  }, [handleEdit, deleteUser])
+  }, [deleteUser])
 
 
-  const clearFields = () => {
-    setName("")
-    setPassword("")
-    setEmail("")
-    setUserId("")
-  }
 
   return (
     <div>
+      <p></p>
       <p>Usuarios cadastrados:</p>
 
       <ul>
         {users.map((user) => (
-          <li key={user.id}>{user.name} - {user.email} <span onClick={() => getEditUser(setUserId(user.id))}>Editar</span> <span onClick={() => deleteUser(user.id)}>Deletar</span></li>
+          <li key={user.id}>{user.name} - {user.email} <Link to={`/users/${user.id}`}>Editar</Link> <button onClick={() => deleteUser(user.id)}>Deletar</button></li>
         ))}
       </ul>
 
       <p>Registrar mais usuarios <Link to="/register">Aqui!</Link></p>
 
-      {userId != "" &&
-        <>
-          <h1>Edite as informações</h1>
-          <form onSubmit={handleEdit}>
-            <label>Atualize seu nome:</label>
-            <input type="name" onChange={(e) => setName(e.target.value)} value={name} required />
-            <label>Atualize seu e-mail:</label>
-            <input type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />
-            <label>Atualize sua senha:</label>
-            <input type="name" onChange={(e) => setPassword(e.target.value)} value={password} required />
-            <input type="submit" value="Editar" />
-          </form>
-        </>
-      }
     </div>
   )
 }

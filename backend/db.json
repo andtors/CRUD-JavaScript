@@ -1,9 +1,9 @@
 {
   "users": [
     {
-      "name": "bia 2",
-      "email": "bia@teste",
-      "password": "123",
+      "name": "bia 3",
+      "email": "bia@teste2",
+      "password": "1234",
       "id": "ed9a"
     },
     {
@@ -16,6 +16,18 @@
       "id": "38fb",
       "name": "meuTeste",
       "email": "myteste@teste",
+      "password": "123"
+    },
+    {
+      "id": "af00",
+      "name": "teste 10",
+      "email": "teste2@teste.com",
+      "password": "123"
+    },
+    {
+      "id": "8a67",
+      "name": "teste",
+      "email": "teste@teste",
       "password": "123"
     }
   ]
